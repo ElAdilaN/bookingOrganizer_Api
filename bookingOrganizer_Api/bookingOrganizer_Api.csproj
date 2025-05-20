@@ -27,7 +27,6 @@
     <Folder Include="IDAO\" />
     <Folder Include="Repository\" />
     <Folder Include="Service\" />
-    <Folder Include="UTILS\" />
   </ItemGroup>
 
 </Project>
