@@ -21,4 +21,13 @@
     <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DAO\" />
+    <Folder Include="DTO\" />
+    <Folder Include="IDAO\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Service\" />
+    <Folder Include="UTILS\" />
+  </ItemGroup>
+
 </Project>
