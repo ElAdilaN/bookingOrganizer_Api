@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "BookinfContext",
+   "ContextClassName": "BookingContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,

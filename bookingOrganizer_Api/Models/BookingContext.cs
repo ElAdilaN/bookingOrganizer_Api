@@ -3,14 +3,26 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace bookingOrganizer_Api.Models;
 
-public partial class BookinfContext : DbContext
+public partial class BookingContext : DbContext
 {
-    public BookinfContext(DbContextOptions<BookinfContext> options)
+
+    public BookingContext() { }
+    public BookingContext(DbContextOptions<BookingContext> options)
         : base(options)
     {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // Only configure if no options have been configured yet
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("DefaultConnection");
+        }
     }
 
     public virtual DbSet<BookingInfo> BookingInfos { get; set; }
