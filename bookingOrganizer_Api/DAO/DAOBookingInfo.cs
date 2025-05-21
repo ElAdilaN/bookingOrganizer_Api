@@ -1,10 +1,11 @@
 ﻿using bookingOrganizer_Api.DTO;
+using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace bookingOrganizer_Api.DAO
 {
-    public class DAOBookingInfo
+    public class DAOBookingInfo : IDAOBookingInfo
     {
         public BookingInfo getBookingInfoById(int id)
         {
@@ -64,7 +65,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        private void AddBooking(BookingInfo booking)
+        public  void AddBooking(BookingInfo booking)
         {
             using (var _context = new BookingContext())
             {
@@ -73,7 +74,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        private void RemoveBooking(int bookingId)
+        public  void RemoveBooking(int bookingId)
         {
             using (var _context = new BookingContext())
             {
@@ -85,7 +86,7 @@ namespace bookingOrganizer_Api.DAO
                 }
             }
         }
-        private async void UpdateBooking(BookingInfo booking)
+        public  async void UpdateBooking(BookingInfo booking)
         {
             using (var _context = new BookingContext())
             {

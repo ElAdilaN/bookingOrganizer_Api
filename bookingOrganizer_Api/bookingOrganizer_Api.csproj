@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IDAO\" />
     <Folder Include="Repository\" />
     <Folder Include="Service\" />
   </ItemGroup>
