@@ -1,5 +1,6 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection;
 
 namespace bookingOrganizer_Api.UTILS
@@ -44,6 +45,25 @@ namespace bookingOrganizer_Api.UTILS
             }
 
             return booking;
+        }
+        public static ICollection<BookingInfo> ConvertDTOsBookingToBookings(ICollection<DTOBookingInfo> dtoBookings)
+        {
+            ICollection<BookingInfo> bookingInfos = new List<BookingInfo>();
+            foreach (var dtoBookingInfo in dtoBookings)
+            {
+                bookingInfos.Add(ConvertDTOBookingToBooking(dtoBookingInfo));
+            }
+            return bookingInfos;
+        }
+
+        public static ICollection<DTOBookingInfo> ConvertBookingsToDTOBookings(ICollection<BookingInfo> bookings)
+        {
+            ICollection<DTOBookingInfo> dtobookingInfos = new List<DTOBookingInfo>();
+            foreach (var BookingInfo in bookings)
+            {
+                dtobookingInfos.Add(ConvertBookingToDTOBooking(BookingInfo));
+            }
+            return dtobookingInfos;
         }
     }
 }
