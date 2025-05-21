@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace bookingOrganizer_Api.UTILS
 {
-    public class UTILSUser
+    public static class UTILSUser
     {
-        public DTOUser convertirUserToDTOUser(User userObj)
+        public static  DTOUser convertirUserToDTOUser(User userObj)
         {
             DTOUser _dtoUser = new DTOUser();
 
@@ -27,7 +27,7 @@ namespace bookingOrganizer_Api.UTILS
             return dtoUser;
         }
 
-        public User ConvertDTOUserToUser(DTOUser dtoUser)
+        public static  User ConvertDTOUserToUser(DTOUser dtoUser)
         {
             User user = new User();
             Type dtoUserType = typeof(DTOUser);
