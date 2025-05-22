@@ -34,7 +34,9 @@ namespace bookingOrganizer_Api.Service
 
             return UTILSBookingInfo.ConvertBookingsToDTOBookings(_daoBookingInfo.getBookings(bookingId, groupId, typeBookingId, date, startDate, endDate, address, purchaseMethod, seatNumber, notes));
         }
-        //public void AddBooking(BookingInfo booking);
+        public void AddBooking(BookingInfo booking) { 
+             _daoBookingInfo.AddBooking(booking);     
+        }
         //public void RemoveBooking(int bookingId);
         //public void UpdateBooking(BookingInfo booking);
 
