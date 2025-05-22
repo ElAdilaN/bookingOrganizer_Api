@@ -2,11 +2,12 @@
 using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
+using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
 
 namespace bookingOrganizer_Api.Service
 {
-    public class ServiceBookingInfo
+    public class ServiceBookingInfo  : RepoBookingInfo
     {
 
         private readonly IDAOBookingInfo _daoBookingInfo;
