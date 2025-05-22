@@ -1,4 +1,8 @@
+﻿using bookingOrganizer_Api.DAO;
+using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
+using bookingOrganizer_Api.Repository;
+using bookingOrganizer_Api.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_SAGE_ESCIO
@@ -13,7 +17,9 @@ namespace API_SAGE_ESCIO
             builder.Services.AddDbContext<BookingContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+            // Register the repository interface and implementation
+            builder.Services.AddScoped<IDAOBookingInfo,DAOBookingInfo>();
+            builder.Services.AddScoped<RepoBookingInfo,ServiceBookingInfo>();
 
             // Add services
             builder.Services.AddControllers();
@@ -32,7 +38,7 @@ namespace API_SAGE_ESCIO
             // Enable Swagger in all environments
             app.UseSwagger();
             app.UseSwaggerUI(c =>
-            {
+            { 
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty; // Swagger at root URL
             });
