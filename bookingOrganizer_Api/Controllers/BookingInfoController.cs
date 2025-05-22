@@ -1,0 +1,92 @@
+﻿using bookingOrganizer_Api.DTO;
+using bookingOrganizer_Api.Repository;
+using bookingOrganizer_Api.UTILS;
+using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
+
+namespace bookingOrganizer_Api.Controllers
+{
+    [Route("api/[Controller]")]
+    [ApiController]
+    public class BookingInfoController : ControllerBase
+    {
+
+        private readonly RepoBookingInfo _repoBookingInfo ; 
+
+        public BookingInfoController (RepoBookingInfo repoBookingInfo)
+        {
+            _repoBookingInfo = repoBookingInfo;
+        }
+
+
+        [HttpGet("getBookingInfoById")]
+        public IActionResult getBookingInfoById(int id)
+        {
+            IActionResult result = null;
+            Wrapper _wrap = new Wrapper ();
+            string message = string.Empty;
+            string status = string.Empty;
+
+            //            IEnumerable<DTOBookingInfo> _dtoBookingInfo = new List<DTOBookingInfo>();
+            DTOBookingInfo _dtoBookingInfo = new  DTOBookingInfo();
+
+            try
+            {
+                _dtoBookingInfo = _repoBookingInfo.getBookingInfoById(id);
+
+                if (_dtoBookingInfo != null)
+                {
+
+                    message = "Data Retrieved Successfully !";
+                    status = "200";
+
+                    _wrap.data = new Dictionary<string, object>
+                    {
+
+                        {"bookingInfo" , _dtoBookingInfo }
+                    };
+
+                    result = Ok(_wrap );
+
+                }else
+                {
+                    message = "No booking info found for the given ID.";
+                    status = "404";             
+
+                    result = NotFound(_wrap);
+                }
+            }
+            catch (Exception ex) {
+
+                message = "An error occurred while retrieving booking info. Message Error : " + ex;
+                status = "500";
+
+
+                result = BadRequest(_wrap);
+            }
+
+            _wrap.message = message;
+            _wrap.status = status;
+
+            return result; 
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+}
