@@ -3,19 +3,32 @@ using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
 using Microsoft.EntityFrameworkCore;
 
+
+using bookingOrganizer_Api.Exceptions;
 namespace bookingOrganizer_Api.DAO
 {
     public class DAOBookingInfo : IDAOBookingInfo
     {
-        public BookingInfo getBookingInfoById(int id)
+        public BookingInfo GetBookingInfoById(int id)
         {
-            using (var context = new BookingContext())
+            try
             {
-                return context.BookingInfos.Where(b => b.BookingId == id).FirstOrDefault();
+
+                using (var context = new BookingContext())
+                {
+                    var result = context.BookingInfos.FirstOrDefault(b => b.BookingId == id);
+                    if (result == null)
+                        throw new NotFoundException($"Booking with ID {id} was not found.");
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DAOException("Failed to retrieve booking by id " , ex);
             }
         }
 
-        public ICollection<BookingInfo> getBookings(
+        public ICollection<BookingInfo> GetBookings(
                int? bookingId = null,
                int? groupId = null,
                int? typeBookingId = null,
@@ -27,73 +40,100 @@ namespace bookingOrganizer_Api.DAO
                string? seatNumber = null,
                string? notes = null)
         {
-            using (var _context = new BookingContext())
+            try
             {
-                var query = _context.BookingInfos.AsQueryable();
 
-                if (bookingId.HasValue)
-                    query = query.Where(b => b.BookingId == bookingId.Value);
-
-                if (groupId.HasValue)
-                    query = query.Where(b => b.GroupId == groupId.Value);
-
-                if (typeBookingId.HasValue)
-                    query = query.Where(b => b.TypeBookingId == typeBookingId.Value);
-
-                if (date.HasValue)
-                    query = query.Where(b => b.Date.Date == date.Value.Date);
-
-                if (startDate.HasValue)
-                    query = query.Where(b => b.StartDate >= startDate.Value);
-
-                if (endDate.HasValue)
-                    query = query.Where(b => b.EndDate <= endDate.Value);
-
-                if (!string.IsNullOrWhiteSpace(address))
-                    query = query.Where(b => b.Address.Contains(address));
-
-                if (!string.IsNullOrWhiteSpace(purchaseMethod))
-                    query = query.Where(b => b.PurchaseMethod.Contains(purchaseMethod));
-
-                if (!string.IsNullOrWhiteSpace(seatNumber))
-                    query = query.Where(b => b.SeatNumber.Contains(seatNumber));
-
-                if (!string.IsNullOrWhiteSpace(notes))
-                    query = query.Where(b => b.Notes.Contains(notes));
-
-                return query.ToList();
-            }
-        }
-
-        public  void AddBooking(BookingInfo booking)
-        {
-            using (var _context = new BookingContext())
-            {
-                _context.BookingInfos.Add(booking);
-                _context.SaveChanges();
-            }
-        }
-
-        public  void RemoveBooking(int bookingId)
-        {
-            using (var _context = new BookingContext())
-            {
-                var booking = _context.BookingInfos.FirstOrDefault(b => b.BookingId == bookingId);
-                if (booking != null)
+                using (var _context = new BookingContext())
                 {
-                    _context.BookingInfos.Remove(booking);
+                    var query = _context.BookingInfos.AsQueryable();
+
+                    if (bookingId.HasValue)
+                        query = query.Where(b => b.BookingId == bookingId.Value);
+
+                    if (groupId.HasValue)
+                        query = query.Where(b => b.GroupId == groupId.Value);
+
+                    if (typeBookingId.HasValue)
+                        query = query.Where(b => b.TypeBookingId == typeBookingId.Value);
+
+                    if (date.HasValue)
+                        query = query.Where(b => b.Date.Date == date.Value.Date);
+
+                    if (startDate.HasValue)
+                        query = query.Where(b => b.StartDate >= startDate.Value);
+
+                    if (endDate.HasValue)
+                        query = query.Where(b => b.EndDate <= endDate.Value);
+
+                    if (!string.IsNullOrWhiteSpace(address))
+                        query = query.Where(b => b.Address.Contains(address));
+
+                    if (!string.IsNullOrWhiteSpace(purchaseMethod))
+                        query = query.Where(b => b.PurchaseMethod.Contains(purchaseMethod));
+
+                    if (!string.IsNullOrWhiteSpace(seatNumber))
+                        query = query.Where(b => b.SeatNumber.Contains(seatNumber));
+
+                    if (!string.IsNullOrWhiteSpace(notes))
+                        query = query.Where(b => b.Notes.Contains(notes));
+
+                    return query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DAOException("Failed to get Bookings ", ex) ;
+            }
+
+        }
+
+        public void AddBooking(BookingInfo booking)
+        {
+            try
+            {
+
+                using (var _context = new BookingContext())
+                {
+                    _context.BookingInfos.Add(booking);
                     _context.SaveChanges();
                 }
             }
+            catch (Exception ex) {
+                throw new DAOException("Failed to add booking ", ex);
+            }
         }
-        public  async void UpdateBooking(BookingInfo booking)
+
+        public void RemoveBooking(int bookingId)
         {
+            try
+            {
+
+            using (var _context = new BookingContext())
+            {
+                var booking = _context.BookingInfos.FirstOrDefault(b => b.BookingId == bookingId);
+                    if (booking == null)
+                        throw new NotFoundException($"Booking with ID {bookingId} was not found.");
+
+                    _context.BookingInfos.Remove(booking);
+                    _context.SaveChanges();
+                
+            }
+            }catch(Exception ex)
+            {
+                throw new DAOException("Failed to Remove Booking", ex);
+            }
+        }
+        public async Task  UpdateBooking(BookingInfo booking)
+        {
+            try
+            {
+
             using (var _context = new BookingContext())
             {
                 var existingBooking = await _context.BookingInfos.FirstOrDefaultAsync(b => b.BookingId == booking.BookingId);
 
                 if (existingBooking == null)
-                    throw new KeyNotFoundException($"Booking with Id {booking.BookingId} not found.");
+                    throw new NotFoundException($"Booking with Id {booking.BookingId} not found.");
 
                 // Update fields
                 existingBooking.GroupId = booking.GroupId;
@@ -108,6 +148,11 @@ namespace bookingOrganizer_Api.DAO
 
                 await _context.SaveChangesAsync();
 
+            }
+            }
+            catch (Exception ex)
+            {
+                throw new DAOException("Failed To Update Booking " , ex);
             }
         }
     }

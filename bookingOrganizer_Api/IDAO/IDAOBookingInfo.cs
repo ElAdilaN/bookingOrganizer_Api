@@ -4,21 +4,21 @@ namespace bookingOrganizer_Api.IDAO
 {
     public interface IDAOBookingInfo
     {
-        public BookingInfo getBookingInfoById(int id);
-        public ICollection<BookingInfo> getBookings(
-          int? bookingId = null,
-          int? groupId = null,
-          int? typeBookingId = null,
-          DateTime? date = null,
-          DateTime? startDate = null,
-          DateTime? endDate = null,
-          string? address = null,
-          string? purchaseMethod = null,
-          string? seatNumber = null,
-          string? notes = null);
+        public BookingInfo GetBookingInfoById(int id);
+        public ICollection<BookingInfo> GetBookings(
+            int? bookingId = null,
+            int? groupId = null,
+            int? typeBookingId = null,
+            DateTime? date = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            string? address = null,
+            string? purchaseMethod = null,
+            string? seatNumber = null,
+            string? notes = null);
         public void AddBooking(BookingInfo booking);
         public void RemoveBooking(int bookingId);
-        public void UpdateBooking(BookingInfo booking);
-
+        public Task UpdateBooking(BookingInfo booking);
     }
+
 }

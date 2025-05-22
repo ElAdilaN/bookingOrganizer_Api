@@ -17,7 +17,7 @@ namespace bookingOrganizer_Api.Service
 
         public DTOBookingInfo getBookingInfoById(int id)
         {
-            return UTILSBookingInfo.ConvertBookingToDTOBooking(_daoBookingInfo.getBookingInfoById(id));
+            return UTILSBookingInfo.ConvertBookingToDTOBooking(_daoBookingInfo.GetBookingInfoById(id));
         }
 
         public ICollection<DTOBookingInfo> getBookings(
@@ -32,7 +32,7 @@ namespace bookingOrganizer_Api.Service
           string? seatNumber = null,
           string? notes = null) {
 
-            return UTILSBookingInfo.ConvertBookingsToDTOBookings(_daoBookingInfo.getBookings(bookingId, groupId, typeBookingId, date, startDate, endDate, address, purchaseMethod, seatNumber, notes));
+            return UTILSBookingInfo.ConvertBookingsToDTOBookings(_daoBookingInfo.GetBookings(bookingId, groupId, typeBookingId, date, startDate, endDate, address, purchaseMethod, seatNumber, notes));
         }
         public void AddBooking(BookingInfo booking) { 
              _daoBookingInfo.AddBooking(booking);     
