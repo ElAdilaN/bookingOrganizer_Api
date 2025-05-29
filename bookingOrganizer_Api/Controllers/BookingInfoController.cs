@@ -170,6 +170,36 @@ namespace bookingOrganizer_Api.Controllers
         }
 
 
+        [HttpDelete("removeBooking/{bookingId}")]
+        public IActionResult RemoveBooking(int bookingId)
+        {
+            Wrapper _wrap = new Wrapper();
+            string message = string.Empty;
+            string status = string.Empty;
+
+            try
+            {
+                _repoBookingInfo.RemoveBooking(bookingId);
+
+                message = $"Booking with ID {bookingId} removed successfully.";
+                status = "200";
+
+                _wrap.message = message;
+                _wrap.status = status;
+
+                return Ok(_wrap);
+            }
+            catch (Exception ex)
+            {
+                message = "An error occurred while removing the booking. Message Error: " + ex.Message;
+                status = "500";
+
+                _wrap.message = message;
+                _wrap.status = status;
+
+                return BadRequest(_wrap);
+            }
+        }
 
 
 
