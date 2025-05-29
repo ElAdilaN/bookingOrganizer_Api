@@ -71,6 +71,64 @@ namespace bookingOrganizer_Api.Controllers
             return result; 
         }
 
+        [HttpGet("getBookings")]
+        public IActionResult GetBookings(
+        int? bookingId = null,
+        int? groupId = null,
+        int? typeBookingId = null,
+        DateTime? date = null,
+        DateTime? startDate = null,
+        DateTime? endDate = null,
+        string? address = null,
+        string? purchaseMethod = null,
+        string? seatNumber = null,
+        string? notes = null)
+        {
+            IActionResult result = null;
+            Wrapper _wrap = new Wrapper();
+            string message = string.Empty;
+            string status = string.Empty;
+
+            try
+            {
+                ICollection<DTOBookingInfo> bookings = _repoBookingInfo.getBookings(
+                    bookingId, groupId, typeBookingId, date, startDate, endDate,
+                    address, purchaseMethod, seatNumber, notes
+                );
+
+                if (bookings != null && bookings.Any())
+                {
+                    message = "Data retrieved successfully!";
+                    status = "200";
+
+                    _wrap.data = new Dictionary<string, object>
+            {
+                { "bookingList", bookings }
+            };
+
+                    result = Ok(_wrap);
+                }
+                else
+                {
+                    message = "No bookings found for the given parameters.";
+                    status = "404";
+
+                    result = NotFound(_wrap);
+                }
+            }
+            catch (Exception ex)
+            {
+                message = "An error occurred while retrieving bookings. Message Error: " + ex.Message;
+                status = "500";
+
+                result = BadRequest(_wrap);
+            }
+
+            _wrap.message = message;
+            _wrap.status = status;
+
+            return result;
+        }
 
 
 
