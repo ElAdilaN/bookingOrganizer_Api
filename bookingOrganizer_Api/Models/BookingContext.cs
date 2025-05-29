@@ -18,10 +18,18 @@ public partial class BookingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Only configure if no options have been configured yet
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("DefaultConnection");
+            // Load configuration manually from appsettings.json
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory()) // Where appsettings.json is
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var connectionString = config.GetConnectionString("DefaultConnection");
+
+            // Configure SQL Server with that connection string
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 
