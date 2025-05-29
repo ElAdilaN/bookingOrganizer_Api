@@ -1,4 +1,5 @@
 ﻿using bookingOrganizer_Api.DTO;
+using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.Models;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
@@ -200,6 +201,52 @@ namespace bookingOrganizer_Api.Controllers
                 return BadRequest(_wrap);
             }
         }
+
+        [HttpPut("updateBooking")]
+        public async Task<IActionResult> UpdateBooking([FromBody] BookingInfo booking)
+        {
+            Wrapper _wrap = new Wrapper();
+            string message = string.Empty;
+            string status = string.Empty;
+
+            try
+            {
+                await _repoBookingInfo.UpdateBooking(booking);
+
+                message = $"Booking with ID {booking.BookingId} updated successfully.";
+                status = "200";
+
+                _wrap.message = message;
+                _wrap.status = status;
+                _wrap.data = new Dictionary<string, object>
+                {
+                    { "updatedBooking", booking }
+                };
+
+                return Ok(_wrap);
+            }
+            catch (NotFoundException nfEx)
+            {
+                message = nfEx.Message;
+                status = "404";
+
+                _wrap.message = message;
+                _wrap.status = status;
+
+                return NotFound(_wrap);
+            }
+            catch (Exception ex)
+            {
+                message = "An error occurred while updating the booking. Message Error: " + ex.Message;
+                status = "500";
+
+                _wrap.message = message;
+                _wrap.status = status;
+
+                return BadRequest(_wrap);
+            }
+        }
+
 
 
 
