@@ -1,4 +1,5 @@
 ﻿using bookingOrganizer_Api.DTO;
+using bookingOrganizer_Api.Models;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ namespace bookingOrganizer_Api.Controllers
     public class BookingInfoController : ControllerBase
     {
 
-        private readonly RepoBookingInfo _repoBookingInfo ; 
+        private readonly RepoBookingInfo _repoBookingInfo;
 
-        public BookingInfoController (RepoBookingInfo repoBookingInfo)
+        public BookingInfoController(RepoBookingInfo repoBookingInfo)
         {
             _repoBookingInfo = repoBookingInfo;
         }
@@ -23,12 +24,12 @@ namespace bookingOrganizer_Api.Controllers
         public IActionResult getBookingInfoById(int id)
         {
             IActionResult result = null;
-            Wrapper _wrap = new Wrapper ();
+            Wrapper _wrap = new Wrapper();
             string message = string.Empty;
             string status = string.Empty;
 
             //            IEnumerable<DTOBookingInfo> _dtoBookingInfo = new List<DTOBookingInfo>();
-            DTOBookingInfo _dtoBookingInfo = new  DTOBookingInfo();
+            DTOBookingInfo _dtoBookingInfo = new DTOBookingInfo();
 
             try
             {
@@ -46,17 +47,19 @@ namespace bookingOrganizer_Api.Controllers
                         {"bookingInfo" , _dtoBookingInfo }
                     };
 
-                    result = Ok(_wrap );
+                    result = Ok(_wrap);
 
-                }else
+                }
+                else
                 {
                     message = "No booking info found for the given ID.";
-                    status = "404";             
+                    status = "404";
 
                     result = NotFound(_wrap);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 message = "An error occurred while retrieving booking info. Message Error : " + ex;
                 status = "500";
@@ -68,7 +71,7 @@ namespace bookingOrganizer_Api.Controllers
             _wrap.message = message;
             _wrap.status = status;
 
-            return result; 
+            return result;
         }
 
         [HttpGet("getBookings")]
@@ -130,6 +133,41 @@ namespace bookingOrganizer_Api.Controllers
             return result;
         }
 
+        [HttpPost("addBooking")]
+        public IActionResult AddBooking([FromBody] BookingInfo booking)
+        {
+            IActionResult result = null;
+            Wrapper _wrap = new Wrapper();
+            string message = string.Empty;
+            string status = string.Empty;
+
+            try
+            {
+                _repoBookingInfo.AddBooking(booking);
+
+                message = "Booking added successfully!";
+                status = "201";
+
+                _wrap.data = new Dictionary<string, object>
+        {
+            { "addedBooking", booking }
+        };
+
+                result = Created(string.Empty, _wrap); // 201 Created
+            }
+            catch (Exception ex)
+            {
+                message = "An error occurred while adding the booking. Message Error: " + ex.Message;
+                status = "500";
+
+                result = BadRequest(_wrap);
+            }
+
+            _wrap.message = message;
+            _wrap.status = status;
+
+            return result;
+        }
 
 
 
