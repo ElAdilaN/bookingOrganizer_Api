@@ -8,6 +8,5 @@ namespace bookingOrganizer_Api.DTO
 
         public string TypeName { get; set; }
 
-        public virtual ICollection<DTOBookingInfo> BookingInfos { get; set; } = new List<DTOBookingInfo>();
     }
 }

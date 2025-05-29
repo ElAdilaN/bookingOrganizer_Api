@@ -11,5 +11,5 @@ public partial class TypeBooking
 
     public string TypeName { get; set; }
 
-    public virtual ICollection<BookingInfo> BookingInfos { get; set; } = new List<BookingInfo>();
+  
 }
