@@ -1,24 +1,50 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Exceptions;
+using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace bookingOrganizer_Api.DAO
 {
-    public class DAOGroup
+    public class DAOGroup : IDAOGroup
     {
         public ICollection<Group> getAllGroups()
         {
-            using (var context = new BookingContext())
+            try
             {
-                return context.Groups.ToList();
+                using (var context = new BookingContext())
+                {
+                    return context.Groups
+                                  .Include(g => g.BookingInfos)
+                                  .Include(g => g.GroupMembers)
+                                  .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DAOException("Failed to get all groups", ex);
             }
         }
 
+
         public Group getGroupById(int groupId)
         {
-            using (var context = new BookingContext())
+            try
             {
-                return context.Groups.Where(g => g.GroupId == groupId).FirstOrDefault();
+                using (var context = new BookingContext())
+                {
+                    var group = context.Groups
+                                       .Include(g => g.BookingInfos)
+                                       .Include(g => g.GroupMembers)
+                                       .FirstOrDefault(g => g.GroupId == groupId);
+                    if (group == null)
+                        throw new NotFoundException($"Group with ID {groupId} not found.");
+                    return group;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DAOException($"Failed to get group with ID {groupId}", ex);
             }
         }
 
@@ -32,10 +58,13 @@ namespace bookingOrganizer_Api.DAO
                     context.SaveChanges();
                 }
             }
+            catch (DbUpdateException dbEx)
+            {
+                throw new DAOException("Database update failed while adding the group.", dbEx);
+            }
             catch (Exception ex)
             {
-                throw new DAOException("Failed to add Group ", ex);
-
+                throw new DAOException("Failed to add Group", ex);
             }
         }
 
