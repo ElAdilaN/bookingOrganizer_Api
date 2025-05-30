@@ -17,10 +17,10 @@ namespace bookingOrganizer_Api.Repository
                   string? purchaseMethod = null,
                   string? seatNumber = null,
                   string? notes = null);
-        public void AddBooking(BookingInfo booking);
+        public void AddBooking(DTOBookingInfo booking);
         public void RemoveBooking(int bookingId);
 
-        public Task UpdateBooking(BookingInfo booking);
+        public Task UpdateBooking(DTOBookingInfo dtoBooking);
 
     }
 }

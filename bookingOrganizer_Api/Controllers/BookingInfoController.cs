@@ -135,7 +135,7 @@ namespace bookingOrganizer_Api.Controllers
         }
 
         [HttpPost("addBooking")]
-        public IActionResult AddBooking([FromBody] BookingInfo booking)
+        public IActionResult AddBooking([FromBody] DTOBookingInfo booking)
         {
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
@@ -203,7 +203,7 @@ namespace bookingOrganizer_Api.Controllers
         }
 
         [HttpPut("updateBooking")]
-        public async Task<IActionResult> UpdateBooking([FromBody] BookingInfo booking)
+        public async Task<IActionResult> UpdateBooking([FromBody] DTOBookingInfo booking)
         {
             Wrapper _wrap = new Wrapper();
             string message = string.Empty;

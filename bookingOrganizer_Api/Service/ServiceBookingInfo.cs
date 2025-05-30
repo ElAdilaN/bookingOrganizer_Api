@@ -54,11 +54,12 @@ namespace bookingOrganizer_Api.Service
                 throw new BookingServiceException("Error retrieving bookings.", ex);
             }
         }
-        public void AddBooking(BookingInfo booking)
+        public void AddBooking(DTOBookingInfo booking)
         {
             try
             {
-                _daoBookingInfo.AddBooking(booking);
+                BookingInfo bookingInfo = UTILSBookingInfo.ConvertDTOBookingToBooking(booking);
+                _daoBookingInfo.AddBooking(bookingInfo);
             }
             catch (Exception ex)
             {
@@ -72,21 +73,26 @@ namespace bookingOrganizer_Api.Service
             {
                 _daoBookingInfo.RemoveBooking(bookingId);
             }
+            catch (KeyNotFoundException)
+            {
+                throw new NotFoundException($"Booking with ID {bookingId} not found.");
+            }
             catch (Exception ex)
             {
                 throw new BookingServiceException("Error removing booking.", ex);
             }
         }
 
-        public async Task UpdateBooking(BookingInfo booking)
+        public async Task UpdateBooking(DTOBookingInfo dtoBooking)
         {
             try
             {
-                await _daoBookingInfo.UpdateBooking(booking);
+                BookingInfo bookingInfo = UTILSBookingInfo.ConvertDTOBookingToBooking(dtoBooking);
+                await _daoBookingInfo.UpdateBooking(bookingInfo);
             }
-            catch (NotFoundException)
+            catch (KeyNotFoundException) // assuming DAO throws this if booking doesn't exist
             {
-                throw;
+                throw new NotFoundException($"Booking with ID {dtoBooking.BookingId } not found.");
             }
             catch (Exception ex)
             {
