@@ -1,59 +1,56 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Exceptions;
-using bookingOrganizer_Api.Models;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
 using Microsoft.AspNetCore.Mvc;
-using System.Numerics;
 
 namespace bookingOrganizer_Api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class BookingInfoController : ControllerBase
+    public class TypeBookingController : ControllerBase
     {
+        private readonly RepoTypeBooking _repoTypeBooking;
 
-        private readonly RepoBookingInfo _repoBookingInfo;
-
-        public BookingInfoController(RepoBookingInfo repoBookingInfo)
+        public TypeBookingController(RepoTypeBooking repoTypeBooking)
         {
-            _repoBookingInfo = repoBookingInfo;
+            _repoTypeBooking = repoTypeBooking;
         }
 
-
-        [HttpGet("getBookingInfoById")]
-        public IActionResult getBookingInfoById(int id)
+        [HttpGet("getTypeBookingById")]
+        public IActionResult GetTypeBookingById(int id)
         {
+
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
             string message = string.Empty;
             string status = string.Empty;
 
-            //            IEnumerable<DTOBookingInfo> _dtoBookingInfo = new List<DTOBookingInfo>();
-            DTOBookingInfo _dtoBookingInfo = new DTOBookingInfo();
+            DTOTypeBooking _dtoTypeBooking = new DTOTypeBooking();
 
             try
             {
-                _dtoBookingInfo = _repoBookingInfo.getBookingInfoById(id);
+                _dtoTypeBooking = _repoTypeBooking.getTypeBookingById(id);
 
-                if (_dtoBookingInfo != null)
+
+                if (_dtoTypeBooking == null)
                 {
-
-                    message = "Data Retrieved Successfully !";
+                    message = "Type Bookings Retrieved Successfully !";
                     status = "200";
 
                     _wrap.data = new Dictionary<string, object>
                     {
-
-                        {"bookingInfo" , _dtoBookingInfo }
+                        {"typeBooking" , _dtoTypeBooking }
                     };
 
                     result = Ok(_wrap);
 
+
+
                 }
                 else
                 {
-                    message = "No booking info found for the given ID.";
+                    message = "No Booking Type found for the given ID.";
                     status = "404";
 
                     result = NotFound(_wrap);
@@ -62,31 +59,20 @@ namespace bookingOrganizer_Api.Controllers
             catch (Exception ex)
             {
 
-                message = "An error occurred while retrieving booking info. Message Error : " + ex;
+                message = "An error occurred while retrieving booking Type by id . Message Error : " + ex;
                 status = "500";
 
 
                 result = BadRequest(_wrap);
             }
-
             _wrap.message = message;
             _wrap.status = status;
 
             return result;
         }
 
-        [HttpGet("getBookings")]
-        public IActionResult GetBookings(
-        int? bookingId = null,
-        int? groupId = null,
-        int? typeBookingId = null,
-        DateTime? date = null,
-        DateTime? startDate = null,
-        DateTime? endDate = null,
-        string? address = null,
-        string? purchaseMethod = null,
-        string? seatNumber = null,
-        string? notes = null)
+        [HttpGet("getAllBookingTypes")]
+        public IActionResult GetAllBookingTypes()
         {
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
@@ -95,47 +81,38 @@ namespace bookingOrganizer_Api.Controllers
 
             try
             {
-                ICollection<DTOBookingInfo> bookings = _repoBookingInfo.getBookings(
-                    bookingId, groupId, typeBookingId, date, startDate, endDate,
-                    address, purchaseMethod, seatNumber, notes
-                );
+                ICollection<DTOTypeBooking> bookingTypes = _repoTypeBooking.getAllTypeBookings();
 
-                if (bookings != null && bookings.Any())
+                if (bookingTypes != null)
                 {
-                    message = "Data retrieved successfully!";
+                    message = "Data retrieved successfully !";
                     status = "200";
-
                     _wrap.data = new Dictionary<string, object>
-            {
-                { "bookingList", bookings }
-            };
-
+                    {
+                        { "bookingTypes", bookingTypes }
+                    };
                     result = Ok(_wrap);
                 }
                 else
                 {
-                    message = "No bookings found for the given parameters.";
+                    message = "No booking types Found ";
                     status = "404";
-
                     result = NotFound(_wrap);
                 }
             }
             catch (Exception ex)
             {
-                message = "An error occurred while retrieving bookings. Message Error: " + ex.Message;
+                message = "An error occurred while retrieving booking types . Message Error: " + ex.Message;
                 status = "500";
-
                 result = BadRequest(_wrap);
             }
-
             _wrap.message = message;
             _wrap.status = status;
-
             return result;
         }
 
-        [HttpPost("addBooking")]
-        public IActionResult AddBooking([FromBody] DTOBookingInfo booking)
+        [HttpPost("addBookingType")]
+        public IActionResult AddBookingType(DTOTypeBooking dtoBookingType)
         {
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
@@ -144,21 +121,20 @@ namespace bookingOrganizer_Api.Controllers
 
             try
             {
-                _repoBookingInfo.AddBooking(booking);
+                _repoTypeBooking.addTypeBooking(dtoBookingType);
 
-                message = "Booking added successfully!";
+                message = "Booking type added successfully !";
                 status = "201";
 
                 _wrap.data = new Dictionary<string, object>
-        {
-            { "addedBooking", booking }
-        };
-
-                result = Created(string.Empty, _wrap); // 201 Created
+                {
+                    { "addedBookingType", dtoBookingType}
+                };
+                result = Created(string.Empty, _wrap);
             }
             catch (Exception ex)
             {
-                message = "An error occurred while adding the booking. Message Error: " + ex.Message;
+                message = "An error occurred while adding the booking type .  Message Error : " + ex.Message;
                 status = "500";
 
                 result = BadRequest(_wrap);
@@ -166,13 +142,11 @@ namespace bookingOrganizer_Api.Controllers
 
             _wrap.message = message;
             _wrap.status = status;
-
             return result;
         }
 
-
-        [HttpDelete("removeBooking/{bookingId}")]
-        public IActionResult RemoveBooking(int bookingId)
+        [HttpDelete("removeBookingType/{bookingTypeId}")]
+        public IActionResult RemoveBookingType(int bookingTypeId)
         {
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
@@ -181,32 +155,31 @@ namespace bookingOrganizer_Api.Controllers
 
             try
             {
-                _repoBookingInfo.RemoveBooking(bookingId);
+                _repoTypeBooking.RemoveTypeBooking(bookingTypeId);
 
-                message = $"Booking with ID {bookingId} removed successfully.";
+                message = $"Booking Type with ID {bookingTypeId} removed successfully.";
                 status = "200";
 
 
                 result = Ok(_wrap);
+
+
             }
             catch (Exception ex)
             {
-                message = "An error occurred while removing the booking. Message Error: " + ex.Message;
+                message = "An error occurred while removing the booking type. Message Error: " + ex.Message;
                 status = "500";
-
 
                 result = BadRequest(_wrap);
             }
-
             _wrap.message = message;
             _wrap.status = status;
             return result;
-
-
         }
 
-        [HttpPut("updateBooking")]
-        public async Task<IActionResult> UpdateBooking([FromBody] DTOBookingInfo booking)
+
+        [HttpPut("UpdateBookingType")]
+        public async Task<IActionResult> UpdateBookingType([FromBody] DTOTypeBooking bookingType)
         {
             IActionResult result = null;
             Wrapper _wrap = new Wrapper();
@@ -215,55 +188,36 @@ namespace bookingOrganizer_Api.Controllers
 
             try
             {
-                await _repoBookingInfo.UpdateBooking(booking);
+                await _repoTypeBooking.UpdateBooking(bookingType);
 
-                message = $"Booking with ID {booking.BookingId} updated successfully.";
+                message = $"Booking type with ID {bookingType.TypeBookingId} updated successfully.";
                 status = "200";
 
                 _wrap.data = new Dictionary<string, object>
-        {
-            { "updatedBooking", booking }
-        };
-
+                {
+                    { "updatedBookingType" ,bookingType }
+                };
                 result = Ok(_wrap);
+
             }
             catch (NotFoundException nfEx)
             {
                 message = nfEx.Message;
                 status = "404";
-
-
                 result = NotFound(_wrap);
             }
             catch (Exception ex)
             {
-                message = "An error occurred while updating the booking. Message Error: " + ex.Message;
+                message = "An error occurred while updating the booking Type. Message Error: " + ex.Message;
                 status = "500";
-
-
                 result = BadRequest(_wrap);
             }
 
-
-            _wrap.status = status;
             _wrap.message = message;
+            _wrap.status = status;
+
             return result;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
