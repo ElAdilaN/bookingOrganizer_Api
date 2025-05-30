@@ -1,11 +1,12 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Exceptions;
+using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace bookingOrganizer_Api.DAO
 {
-    public class DAOTypeBooking
+    public class DAOTypeBooking: IDAOTypeBooking
     {
         public ICollection<TypeBooking>getAllTypeBookings()
         {
