@@ -70,10 +70,10 @@ public partial class BookingContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookingIn__Group__440B1D61");
 
-            entity.HasOne(d => d.TypeBooking).WithMany(p => p.BookingInfos)
-                .HasForeignKey(d => d.TypeBookingId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BookingIn__TypeB__44FF419A");
+            //entity.HasOne(d => d.TypeBooking).WithMany(p => p.BookingInfos)
+            //    .HasForeignKey(d => d.TypeBookingId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__BookingIn__TypeB__44FF419A");
         });
 
         modelBuilder.Entity<Group>(entity =>

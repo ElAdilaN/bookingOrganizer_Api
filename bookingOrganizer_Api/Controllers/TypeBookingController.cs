@@ -33,7 +33,7 @@ namespace bookingOrganizer_Api.Controllers
                 _dtoTypeBooking = _repoTypeBooking.getTypeBookingById(id);
 
 
-                if (_dtoTypeBooking == null)
+                if (_dtoTypeBooking != null)
                 {
                     message = "Type Bookings Retrieved Successfully !";
                     status = "200";

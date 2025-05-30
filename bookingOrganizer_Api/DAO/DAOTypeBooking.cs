@@ -28,7 +28,9 @@ namespace bookingOrganizer_Api.DAO
             {
                 using (var context = new BookingContext())
                 {
-                    return context.TypeBookings.Where( t => t.TypeBookingId == id ).FirstOrDefault() ;
+
+                    TypeBooking tb = context.TypeBookings.Where( t => t.TypeBookingId == id ).FirstOrDefault() ;
+                    return tb; 
                 }
             }
             catch (Exception ex)
