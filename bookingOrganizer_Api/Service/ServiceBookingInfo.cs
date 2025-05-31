@@ -25,7 +25,7 @@ namespace bookingOrganizer_Api.Service
             }
             catch (NotFoundException)
             {
-                throw;
+                throw  ;
             }
             catch (Exception ex)
             {
