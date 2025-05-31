@@ -27,6 +27,9 @@ namespace API_SAGE_ESCIO
             builder.Services.AddScoped<IDAOTypeBooking, DAOTypeBooking>();
             builder.Services.AddScoped<RepoTypeBooking, ServiceTypeBooking>();
 
+            builder.Services.AddScoped<IDAOGroup, DAOGroup>();
+            builder.Services.AddScoped<RepoGroup, ServiceGroup>();
+
             // ✅ Add services
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
