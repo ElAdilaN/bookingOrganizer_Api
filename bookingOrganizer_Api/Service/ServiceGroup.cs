@@ -1,12 +1,13 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.IDAO;
+using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
 using System.Threading.Tasks.Dataflow;
 
 namespace bookingOrganizer_Api.Service
 {
-    public class ServiceGroup
+    public class ServiceGroup : RepoGroup
     {
         private readonly IDAOGroup _daoGroup;
 
@@ -23,7 +24,7 @@ namespace bookingOrganizer_Api.Service
             }
             catch (Exception ex)
             {
-                throw new GroupServiceException("Error retrieving groups,ex");
+                throw new GroupServiceException("Error retrieving groups",ex);
             }
         }
 
