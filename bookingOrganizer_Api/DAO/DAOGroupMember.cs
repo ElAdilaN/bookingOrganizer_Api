@@ -7,17 +7,20 @@ namespace bookingOrganizer_Api.DAO
 {
     public class DAOGroupMember : IDAOGroupMember
     {
+        private readonly BookingContext _context;
+        public DAOGroupMember(BookingContext context)
+        {
+            _context = context;
+        }
         public ICollection<GroupMember> GetGroupMembersByGroupId(int groupId)
         {
             try
             {
-                using (var context = new BookingContext())
-                {
-                    return context.GroupMembers
+                return _context.GroupMembers
                         .Where(gm => gm.GroupId == groupId)
                         .Include(gm => gm.User)
                         .ToList();
-                }
+
             }
             catch (Exception ex)
             {
@@ -29,12 +32,9 @@ namespace bookingOrganizer_Api.DAO
         {
             try
             {
-                using (var context = new BookingContext())
-                {
-                    return context.GroupMembers
-                        .Include(gm => gm.User)
-                        .FirstOrDefault(gm => gm.GroupMemberId == groupMemberId);
-                }
+                return _context.GroupMembers
+                   .Include(gm => gm.User)
+                   .FirstOrDefault(gm => gm.GroupMemberId == groupMemberId);
             }
             catch (Exception ex)
             {
@@ -46,17 +46,15 @@ namespace bookingOrganizer_Api.DAO
         {
             try
             {
-                using (var context = new BookingContext())
+                var groupMember = new GroupMember
                 {
-                    var groupMember = new GroupMember
-                    {
-                        GroupId = groupId,
-                        UserId = userId
-                    };
+                    GroupId = groupId,
+                    UserId = userId
+                };
 
-                    context.GroupMembers.Add(groupMember);
-                    context.SaveChanges();
-                }
+                _context.GroupMembers.Add(groupMember);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {
@@ -68,15 +66,13 @@ namespace bookingOrganizer_Api.DAO
         {
             try
             {
-                using (var context = new BookingContext())
-                {
-                    var groupMember = context.GroupMembers.FirstOrDefault(gm => gm.GroupMemberId == groupMemberId);
-                    if (groupMember == null)
-                        throw new NotFoundException($"Group member with ID {groupMemberId} was not found.");
+                var groupMember = _context.GroupMembers.FirstOrDefault(gm => gm.GroupMemberId == groupMemberId);
+                if (groupMember == null)
+                    throw new NotFoundException($"Group member with ID {groupMemberId} was not found.");
 
-                    context.GroupMembers.Remove(groupMember);
-                    context.SaveChanges();
-                }
+                _context.GroupMembers.Remove(groupMember);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {
