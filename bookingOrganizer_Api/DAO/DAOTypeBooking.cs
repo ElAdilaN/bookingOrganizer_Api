@@ -6,37 +6,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace bookingOrganizer_Api.DAO
 {
-    public class DAOTypeBooking: IDAOTypeBooking
+    public class DAOTypeBooking : IDAOTypeBooking
     {
-        private readonly BookingContext _context; 
-        public DAOTypeBooking(BookingContext context )
+        private readonly BookingContext _context;
+        public DAOTypeBooking(BookingContext context)
         {
-
+            _context = context;
         }
-        public ICollection<TypeBooking>getAllTypeBookings()
+        public ICollection<TypeBooking> getAllTypeBookings()
         {
             try
             {
-                using(var context = new BookingContext())
-                {
-                    return context.TypeBookings.ToList();
-                }
-            }catch(Exception ex)
+                return _context.TypeBookings.ToList();
+
+            }
+            catch (Exception ex)
             {
                 throw new DAOException("Failed to retrieve all booking types. Error: " + ex.Message, ex);
             }
         }
 
-        public TypeBooking getTypeBookingById( int id  ) 
+        public TypeBooking getTypeBookingById(int id)
         {
             try
             {
-                using (var context = new BookingContext())
-                {
+                TypeBooking tb = _context.TypeBookings.Where(t => t.TypeBookingId == id).FirstOrDefault();
+                return tb;
 
-                    TypeBooking tb = context.TypeBookings.Where( t => t.TypeBookingId == id ).FirstOrDefault() ;
-                    return tb; 
-                }
             }
             catch (Exception ex)
             {
@@ -44,15 +40,13 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void  addTypeBooking( TypeBooking typeBooking  )
+        public void addTypeBooking(TypeBooking typeBooking)
         {
             try
             {
-                using (var _context = new BookingContext())
-                {
-                    _context.TypeBookings.Add(typeBooking);
-                    _context.SaveChanges();
-                }
+                _context.TypeBookings.Add(typeBooking);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {
@@ -60,19 +54,18 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void RemoveTypeBooking(int id )
+        public void RemoveTypeBooking(int id)
         {
             try
             {
-                using (var _context = new BookingContext())
-                {
-                    var typeBooking = _context.TypeBookings.FirstOrDefault(b => b.TypeBookingId  == id);
-                    if (typeBooking == null)
-                        throw new NotFoundException($"Booking Type with ID {id } was not found.");
 
-                    _context.TypeBookings.Remove(typeBooking);
-                    _context.SaveChanges();
-                }
+                var typeBooking = _context.TypeBookings.FirstOrDefault(b => b.TypeBookingId == id);
+                if (typeBooking == null)
+                    throw new NotFoundException($"Booking Type with ID {id} was not found.");
+
+                _context.TypeBookings.Remove(typeBooking);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {
@@ -85,20 +78,19 @@ namespace bookingOrganizer_Api.DAO
             try
             {
 
-                using (var _context = new BookingContext())
-                {
-                    var existingBookingType = await _context.TypeBookings.FirstOrDefaultAsync(b => b.TypeBookingId == bookingType.TypeBookingId);
 
-                    if (existingBookingType == null)
-                        throw new NotFoundException($"Booking Type  with Id {bookingType.TypeBookingId} not found.");
+                var existingBookingType = await _context.TypeBookings.FirstOrDefaultAsync(b => b.TypeBookingId == bookingType.TypeBookingId);
 
-                    // Update fields
-                    existingBookingType.TypeName = bookingType.TypeName;
-                   
+                if (existingBookingType == null)
+                    throw new NotFoundException($"Booking Type  with Id {bookingType.TypeBookingId} not found.");
 
-                    await _context.SaveChangesAsync();
+                // Update fields
+                existingBookingType.TypeName = bookingType.TypeName;
 
-                }
+
+                await _context.SaveChangesAsync();
+
+
             }
             catch (Exception ex)
             {
