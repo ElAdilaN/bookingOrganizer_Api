@@ -8,6 +8,11 @@ namespace bookingOrganizer_Api.DAO
 {
     public class DAOTypeBooking: IDAOTypeBooking
     {
+        private readonly BookingContext _context; 
+        public DAOTypeBooking(BookingContext context )
+        {
+
+        }
         public ICollection<TypeBooking>getAllTypeBookings()
         {
             try
