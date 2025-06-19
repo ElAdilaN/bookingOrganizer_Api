@@ -4,16 +4,20 @@ namespace bookingOrganizer_Api.DAO
 {
     public class DAOUser
     {
+        private readonly BookingContext _context;
+        public DAOUser(BookingContext context)
+        {
+            _context = context;
+        }
         public User getUserByName(string userNameInput)
         {
-            using (var context = new BookingContext())
-            {
-                return context.Users.Where(u => u.UserName == userNameInput).FirstOrDefault();
-            }
+            return _context.Users.Where(u => u.UserName == userNameInput).FirstOrDefault();
+
         }
 
-        public void registerUser(User user) { 
-            
+        public void registerUser(User user)
+        {
+
         }
     }
 }
