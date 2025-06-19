@@ -1,4 +1,5 @@
 ﻿using bookingOrganizer_Api.Models;
+using System.Text.Json.Serialization;
 
 namespace bookingOrganizer_Api.DTO
 {
@@ -24,8 +25,11 @@ namespace bookingOrganizer_Api.DTO
 
         public string Notes { get; set; }
 
-        public virtual DTOGroup Group { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+        public virtual DTOGroup? Group { get; set; }
 
-        public virtual DTOTypeBooking TypeBooking { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+        public virtual DTOTypeBooking? TypeBooking { get; set; }
     }
+
 }
