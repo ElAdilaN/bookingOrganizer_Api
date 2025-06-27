@@ -16,8 +16,8 @@ namespace bookingOrganizer_Api.IDAO
             string? purchaseMethod = null,
             string? seatNumber = null,
             string? notes = null);
-        public void AddBooking(BookingInfo booking);
-        public void RemoveBooking(int bookingId);
+        public Task  AddBooking(BookingInfo booking);
+        public Task RemoveBooking(int bookingId);
         public Task UpdateBooking(BookingInfo booking);
     }
 

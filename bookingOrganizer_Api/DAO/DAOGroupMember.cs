@@ -42,7 +42,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void AddGroupMember(int groupId, int userId)
+        public async Task  AddGroupMember(int groupId, int userId)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace bookingOrganizer_Api.DAO
                 };
 
                 _context.GroupMembers.Add(groupMember);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void RemoveGroupMemberById(int groupMemberId)
+        public async Task  RemoveGroupMemberById(int groupMemberId)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace bookingOrganizer_Api.DAO
                     throw new NotFoundException($"Group member with ID {groupMemberId} was not found.");
 
                 _context.GroupMembers.Remove(groupMember);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (Exception ex)

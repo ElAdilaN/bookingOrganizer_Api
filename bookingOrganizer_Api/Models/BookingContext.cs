@@ -10,7 +10,6 @@ namespace bookingOrganizer_Api.Models;
 public partial class BookingContext : DbContext
 {
 
-    public BookingContext() { }
     public BookingContext(DbContextOptions<BookingContext> options)
         : base(options)
     {
@@ -26,7 +25,7 @@ public partial class BookingContext : DbContext
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            var connectionString = config.GetConnectionString("DefaultConnection") ;
 
             // Configure SQL Server with that connection string
             optionsBuilder.UseSqlServer(connectionString);

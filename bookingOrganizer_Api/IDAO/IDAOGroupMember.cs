@@ -8,13 +8,8 @@ namespace bookingOrganizer_Api.IDAO
 
         public GroupMember GetGroupMemberById(int groupMemberId);
 
-        public void AddGroupMember(int groupId, int userId);
+        public Task  AddGroupMember(int groupId, int userId);
 
-        public void RemoveGroupMemberById(int groupMemberId);
-
-
-
-
-
+        public Task  RemoveGroupMemberById(int groupMemberId);
     }
 }

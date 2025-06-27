@@ -40,12 +40,12 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void addTypeBooking(TypeBooking typeBooking)
+        public async Task addTypeBooking(TypeBooking typeBooking)
         {
             try
             {
                 _context.TypeBookings.Add(typeBooking);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void RemoveTypeBooking(int id)
+        public async Task  RemoveTypeBooking(int id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace bookingOrganizer_Api.DAO
                     throw new NotFoundException($"Booking Type with ID {id} was not found.");
 
                 _context.TypeBookings.Remove(typeBooking);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (Exception ex)

@@ -14,8 +14,6 @@ namespace API_SAGE_ESCIO
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
-
             // ✅ Register DbContext using connection string from appsettings.json
             builder.Services.AddDbContext<BookingContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -87,12 +87,12 @@ namespace bookingOrganizer_Api.DAO
 
         }
 
-        public void AddBooking(BookingInfo booking)
+        public async Task AddBooking(BookingInfo booking)
         {
             try
             {
                 _context.BookingInfos.Add(booking);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -100,7 +100,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void RemoveBooking(int bookingId)
+        public async Task  RemoveBooking(int bookingId)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace bookingOrganizer_Api.DAO
                     throw new NotFoundException($"Booking with ID {bookingId} was not found.");
 
                 _context.BookingInfos.Remove(booking);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

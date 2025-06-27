@@ -34,7 +34,7 @@ namespace bookingOrganizer_Api.DAO
         {
             try
             {
-                var group = context.Groups
+                var group = _context.Groups
                                    .Include(g => g.BookingInfos)
                                    .Include(g => g.GroupMembers)
                                    .FirstOrDefault(g => g.GroupId == groupId);
@@ -48,12 +48,12 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void addGroup(Group group)
+        public async Task  addGroup(Group group)
         {
             try
             {
                 _context.Groups.Add(group);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (DbUpdateException dbEx)
@@ -66,7 +66,7 @@ namespace bookingOrganizer_Api.DAO
             }
         }
 
-        public void RemoveGroup(int groupId)
+        public async Task  RemoveGroup(int groupId)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace bookingOrganizer_Api.DAO
                 if (group == null)
                     throw new NotFoundException($"Group with ID {groupId} was not found.");
                 _context.Groups.Remove(group);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

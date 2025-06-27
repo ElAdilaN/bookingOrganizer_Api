@@ -7,9 +7,9 @@ namespace bookingOrganizer_Api.IDAO
         public ICollection<Models.Group> getAllGroups();
         public Models.Group getGroupById(int groupId);
 
-        public void addGroup(Models.Group group);
+        public Task  addGroup(Models.Group group);
 
-        public void RemoveGroup(int groupId);
+        public Task  RemoveGroup(int groupId);
         public Task UpdateGroup(Models.Group updatedGroup);
 
     }

@@ -8,9 +8,9 @@ namespace bookingOrganizer_Api.IDAO
 
         public TypeBooking getTypeBookingById(int id);
 
-        public void addTypeBooking(TypeBooking typeBooking);
+        public Task  addTypeBooking(TypeBooking typeBooking);
 
-        public void RemoveTypeBooking(int id);
+        public Task  RemoveTypeBooking(int id);
 
         public  Task UpdateBooking(TypeBooking bookingType);
 
