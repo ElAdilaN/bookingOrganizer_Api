@@ -89,7 +89,7 @@ public ServiceBookingInfo(IDAOBookingInfo daoBookingInfo, IMapper mapper)
 }
 ```
 
-- Promotes loose coupling and testability via IoC
+- Promotes loose coupling and testability through Inversion of Control (IoC): Instead of a class creating its own dependencies, they are provided to it externally (e.g., via the constructor), making components flexible and easy to test with mock objects.
 
 ---
 
