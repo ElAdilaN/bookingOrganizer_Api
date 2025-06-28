@@ -32,6 +32,9 @@ namespace API_SAGE_ESCIO
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(Program));
+
+
 
             // ✅ Add CORS policy
             builder.Services.AddCors(options =>

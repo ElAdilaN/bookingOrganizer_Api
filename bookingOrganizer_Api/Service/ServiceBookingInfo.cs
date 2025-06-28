@@ -1,4 +1,5 @@
-﻿using bookingOrganizer_Api.DTO;
+﻿using AutoMapper;
+using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.IDAO;
 using bookingOrganizer_Api.Models;
@@ -11,9 +12,11 @@ namespace bookingOrganizer_Api.Service
     {
 
         private readonly IDAOBookingInfo _daoBookingInfo;
-        public ServiceBookingInfo(IDAOBookingInfo daoBookingInfo)
+        private readonly IMapper _mapper; 
+        public ServiceBookingInfo(IDAOBookingInfo daoBookingInfo , IMapper mapper)
         {
             _daoBookingInfo = daoBookingInfo;
+            _mapper = mapper;
         }
 
 
@@ -21,7 +24,12 @@ namespace bookingOrganizer_Api.Service
         {
             try
             {
-                return UTILSBookingInfo.ConvertBookingToDTOBooking(_daoBookingInfo.GetBookingInfoById(id));
+                //*  THIS ONE ALSO CAN BE USED *//
+               //return UTILSBookingInfo.ConvertBookingToDTOBooking(_daoBookingInfo.GetBookingInfoById(id));
+
+                var booking = _daoBookingInfo.GetBookingInfoById(id);
+                return _mapper.Map<DTOBookingInfo>(booking);
+
             }
             catch (NotFoundException)
             {
