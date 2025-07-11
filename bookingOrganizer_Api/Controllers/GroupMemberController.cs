@@ -1,6 +1,7 @@
 ﻿using bookingOrganizer_Api.DTO;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -9,6 +10,7 @@ namespace bookingOrganizer_Api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
+    [Authorize]
     public class GroupMemberController : ControllerBase
     {
         private readonly RepoGroupMember _repoGroupMemeber;

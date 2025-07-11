@@ -3,6 +3,7 @@ using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.Models;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 
@@ -10,6 +11,7 @@ namespace bookingOrganizer_Api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
+    [Authorize]
     public class BookingInfoController : ControllerBase
     {
 

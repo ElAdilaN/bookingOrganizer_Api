@@ -2,12 +2,14 @@
 using bookingOrganizer_Api.Exceptions;
 using bookingOrganizer_Api.Repository;
 using bookingOrganizer_Api.UTILS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bookingOrganizer_Api.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
+    [Authorize]
     public class TypeBookingController : ControllerBase
     {
         private readonly RepoTypeBooking _repoTypeBooking;
